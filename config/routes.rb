@@ -1,9 +1,22 @@
 Rails.application.routes.draw do
+  get "orders/index"
+  get "orders/show"
+  get "orders/checkout"
+  # Devise
+  devise_for :users
+
+  # Root
   root "products#index"
 
-  devise_for :users
-  resources :products, only: [ :index, :show ]
-  resources :orders, only: [ :new, :create, :show ]
-  post "/checkout", to: "checkouts#create"
-  post "/webhooks/stripe", to: "webhooks#stripe"
+  # Produtos
+  resources :products
+
+  # Pedidos e itens
+  resources :orders do
+    resources :order_items, only: [ :create, :update, :destroy ]
+  end
+
+  # Checkout
+  get "checkout", to: "orders#checkout"
+  post "checkout", to: "orders#process_checkout"
 end

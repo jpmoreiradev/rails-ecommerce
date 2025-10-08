@@ -2,19 +2,13 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: 5
-  url: <%= ENV.fetch("DATABASE_URL") %>
+  url: <%= ENV['DATABASE_URL'] %>
 
 development:
   <<: *default
-  database: neondb
-  sslmode: require
 
 test:
   <<: *default
-  database: neondb_test
-  sslmode: require
 
 production:
   <<: *default
-  url: <%= ENV.fetch("DATABASE_URL") %>
-  sslmode: require
