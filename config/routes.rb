@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   root "products#index"
 
   # Produtos
-  resources :products
+  resources :products, only: [ :index, :show, :new, :create, :edit, :update, :destroy ] do
+    post "add_to_cart", to: "order_items#create", on: :member
+  end
 
   # Pedidos e itens
   resources :orders do

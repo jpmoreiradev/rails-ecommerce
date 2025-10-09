@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_product, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -6,6 +7,7 @@ class ProductsController < ApplicationController
   end
 
   def show
+    # @product já está definido pelo before_action :set_product
   end
 
   def new
@@ -15,18 +17,19 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     if @product.save
-      redirect_to @product, notice: "Produto criado com sucesso!"
+      redirect_to products_path, notice: "Produto criado com sucesso!"
     else
       render :new
     end
   end
 
   def edit
+    # @product já está definido pelo before_action :set_product
   end
 
   def update
     if @product.update(product_params)
-      redirect_to @product, notice: "Produto atualizado com sucesso!"
+      redirect_to product_path(@product), notice: "Produto atualizado com sucesso!"
     else
       render :edit
     end
