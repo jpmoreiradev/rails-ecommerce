@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :authorize_admin!, only: [ :new, :create, :edit, :update, :destroy ]
   before_action :set_product, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -7,7 +8,6 @@ class ProductsController < ApplicationController
   end
 
   def show
-    # @product já está definido pelo before_action :set_product
   end
 
   def new
@@ -24,7 +24,6 @@ class ProductsController < ApplicationController
   end
 
   def edit
-    # @product já está definido pelo before_action :set_product
   end
 
   def update
@@ -41,6 +40,12 @@ class ProductsController < ApplicationController
   end
 
   private
+
+  def authorize_admin!
+    unless current_user&.admin?
+      redirect_to products_path, alert: "Acesso não autorizado."
+    end
+  end
 
   def set_product
     @product = Product.find(params[:id])

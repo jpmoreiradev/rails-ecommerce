@@ -1,43 +1,49 @@
 <h2 class="text-3xl font-bold mb-6">Seu Carrinho</h2>
 
 <% if @order.present? && @order.order_items.any? %>
-  <table class="w-full bg-white shadow rounded-lg overflow-hidden">
-    <thead>
-      <tr class="bg-gray-200 text-left">
-        <th class="p-2">Produto</th>
-        <th class="p-2">Quantidade</th>
-        <th class="p-2">Preço</th>
-        <th class="p-2">Total</th>
-        <th class="p-2">Ação</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @order.order_items.each do |item| %>
-        <tr class="border-b hover:bg-gray-50 transition">
-          <td class="p-2 flex items-center space-x-2">
-            <% if item.product.image_url.present? %>
-              <img src="<%= item.product.image_url %>" class="h-12 w-12 object-cover rounded">
-            <% else %>
-              <div class="h-12 w-12 bg-gray-200 rounded flex items-center justify-center text-gray-400">Sem imagem</div>
-            <% end %>
-            <span><%= item.product.title %></span>
-          </td>
-          <td class="p-2"><%= item.quantity || 0 %></td>
-          <td class="p-2">$<%= (item.unit_price_cents || 0) / 100.0 %></td>
-          <td class="p-2">$<%= ((item.unit_price_cents || 0) * (item.quantity || 0)) / 100.0 %></td>
-          <td class="p-2">
-            <%= link_to "Remover", order_order_item_path(@order, item), method: :delete, class: "text-red-500 hover:text-red-700" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<table class="w-full bg-white shadow rounded-lg overflow-hidden">
+  <thead>
+    <tr class="bg-gray-200 text-left">
+      <th class="p-2">Produto</th>
+      <th class="p-2">Quantidade</th>
+      <th class="p-2">Preço</th>
+      <th class="p-2">Total</th>
+      <th class="p-2">Ação</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_items.each do |item| %>
+    <tr class="border-b hover:bg-gray-50 transition">
+      <td class="p-2 flex items-center space-x-2">
+        <% if item.product.image_url.present? %>
+        <img src="<%= item.product.image_url %>" class="h-12 w-12 object-cover rounded">
+        <% else %>
+        <div class="h-12 w-12 bg-gray-200 rounded flex items-center justify-center text-gray-400">Sem imagem</div>
+        <% end %>
+        <span><%= item.product.title %></span>
+      </td>
+      <td class="p-2"><%= item.quantity || 0 %></td>
+      <td class="p-2">$<%= (item.unit_price_cents || 0) / 100.0 %></td>
+      <td class="p-2">$<%= ((item.unit_price_cents || 0) * (item.quantity || 0)) / 100.0 %></td>
+      <td class="p-2">
+        <%= button_to "Remover", order_order_item_path(@order, item), method: :delete,
+    form_class: "inline-block",
+    data: { turbo_confirm: "Tem certeza que deseja remover este item?" },
+    class: "text-red-500 hover:text-red-700" %>
 
-  <div class="mt-6 text-right">
-    <% total_cents = @order.order_items.sum { |item| (item.unit_price_cents || 0) * (item.quantity || 0) } %>
-    <span class="text-xl font-bold">Total: $<%= total_cents / 100.0 %></span>
-    <%= link_to "Finalizar Compra", checkout_path, class: "ml-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" %>
-  </div>
+
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="mt-6 text-right">
+  <% total_cents = @order.order_items.sum { |item| (item.unit_price_cents || 0) * (item.quantity || 0) } %>
+  <span class="text-xl font-bold">Total: $<%= total_cents / 100.0 %></span>
+  <%= link_to "Finalizar Compra", checkout_orders_path, method: :post, class: "ml-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600", data: { turbo: false }, target: "_blank" %>
+
+</div>
 <% else %>
-  <p class="text-gray-500">Seu carrinho está vazio.</p>
+<p class="text-gray-500">Seu carrinho está vazio.</p>
 <% end %>

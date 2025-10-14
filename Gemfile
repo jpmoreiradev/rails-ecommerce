@@ -69,3 +69,7 @@ gem "stripe", "~> 16.0"
 gem "sidekiq", "~> 8.0"
 gem "redis", "~> 5.4"
 gem "dotenv-rails", groups: [ :development, :test ]
+
+gem "rubocop", "~> 1.81"
+
+gem "rubocop-rails", "~> 2.33"

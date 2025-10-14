@@ -13,12 +13,18 @@ Rails.application.routes.draw do
     post "add_to_cart", to: "order_items#create", on: :member
   end
 
-  # Pedidos e itens
-  resources :orders do
+
+  resources :orders, only: [ :index, :show ] do
+    post :checkout, on: :collection
+    get :payment_status, on: :collection
     resources :order_items, only: [ :create, :update, :destroy ]
   end
 
+
+
+
   # Checkout
   get "checkout", to: "orders#checkout"
+  get "orders/payment_status", to: "orders#payment_status"
   post "checkout", to: "orders#process_checkout"
 end

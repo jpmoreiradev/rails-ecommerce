@@ -2,5 +2,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as ActiveStorage from "@rails/activestorage"
+import "../stylesheets/application.css"
 import "@rails/request.js"  // necessário para method: :delete
 import "@rails/ujs"         // se estiver usando UJS

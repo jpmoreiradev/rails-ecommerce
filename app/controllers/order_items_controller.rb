@@ -2,14 +2,12 @@ class OrderItemsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    # Pega o produto via ID enviado na rota member
     product = Product.find(params[:id])
 
-    # Pega ou cria o pedido pendente do usuário
-    order = current_user.orders.last || current_user.orders.create(status: "pending")
+    order = current_user.orders.find_by(status: "pending") || current_user.orders.create(status: "pending")
 
-    # Procura se já existe o item no carrinho
     order_item = order.order_items.find_by(product: product)
+
     if order_item
       order_item.quantity += 1
       order_item.save
