@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :orders, only: [ :index, :show ] do
     post :checkout, on: :collection
     get :payment_status, on: :collection
+    get :my_orders, on: :collection
     resources :order_items, only: [ :create, :update, :destroy ]
   end
 

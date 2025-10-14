@@ -53,4 +53,8 @@ class OrdersController < ApplicationController
 
     redirect_to orders_path
   end
+
+  def my_orders
+    @orders = current_user.orders.where(status: "paid").includes(order_items: :product)
+  end
 end

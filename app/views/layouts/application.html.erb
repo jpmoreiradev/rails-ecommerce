@@ -5,6 +5,9 @@
   <title>E-commerce</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   <%= turbo_include_tags %>
@@ -31,6 +34,7 @@
         <%= link_to "Registrar", new_user_registration_path, class: "text-green-500 hover:text-green-700" %>
         <% end %>
         <%= link_to "Carrinho", orders_path, class: "text-gray-700 hover:text-gray-900" %>
+        <%= link_to "Meus Pedidos", my_orders_orders_path, class: "text-gray-700 hover:text-gray-900" %>
       </nav>
     </div>
   </header>

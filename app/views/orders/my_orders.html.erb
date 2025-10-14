@@ -1,0 +1,85 @@
+<div class="bg-gray-100 min-h-screen py-10">
+  <div class="container mx-auto">
+    <h1 class="text-4xl font-extrabold text-gray-800 mb-8">Meus Pedidos</h1>
+
+    <% if @orders.any? %>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+          <tr>
+            <th class="p-3 text-left font-semibold">Pedido</th>
+            <th class="p-3 text-left font-semibold">Produtos</th>
+            <th class="p-3 text-left font-semibold">Data</th>
+            <th class="p-3 text-left font-semibold">Status</th>
+            <th class="p-3 text-right font-semibold">Total</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200">
+          <% @orders.each do |order| %>
+          <tr class="hover:bg-gray-50 transition-colors duration-150">
+            <td class="p-3 font-medium text-indigo-600">
+              <%= link_to "##{order.id}", order_path(order), class: "hover:underline" %>
+            </td>
+
+            <td class="p-3">
+              <div class="flex items-center space-x-2">
+                <% order.order_items.take(3).each do |item| %>
+                <div class="relative group">
+                  <% if item.product.image_url.present? %>
+                  <img src="<%= item.product.image_url %>" alt="<%= item.product.title %>" class="h-32 w-32 bg-gray-100 object-cover rounded-lg border border-gray-300 shadow-md">
+
+                  <% else %>
+                  <div class="h-8 w-8 flex items-center justify-center bg-gray-200 text-[10px] text-gray-400 rounded-md">
+                    S/I
+                  </div>
+                  <% end %>
+
+                  <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-max bg-gray-800 text-white text-[10px] rounded py-0.5 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <%= item.product.title %>
+                  </div>
+                </div>
+                <% end %>
+
+                <% if order.order_items.size > 3 %>
+                <div class="h-8 w-8 flex items-center justify-center bg-gray-100 border border-gray-300 text-[10px] font-semibold text-gray-600 rounded-md">
+                  +<%= order.order_items.size - 3 %>
+                </div>
+                <% end %>
+              </div>
+            </td>
+
+            <td class="p-3 text-gray-600"><%= l(order.created_at, format: :long) %></td>
+
+            <td class="p-3">
+              <span class="px-2 py-1 inline-flex text-xs font-semibold rounded-full 
+                    <%= case order.status
+                      when 'pending' then 'bg-yellow-100 text-yellow-800'
+                      when 'paid' then 'bg-green-100 text-green-800'
+                      when 'cancelled' then 'bg-red-100 text-red-800'
+                      else 'bg-gray-100 text-gray-700'
+                    end %>">
+                <%= order.status.humanize %>
+              </span>
+            </td>
+
+            <td class="p-3 text-right font-semibold text-gray-800">
+              <%= number_to_currency(order.order_items.sum { |item| item.quantity * (item.product.price_cents / 100.0) }) %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <% else %>
+    <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-700 p-6 rounded-lg shadow-md">
+      <h2 class="font-bold text-lg mb-2">Nenhum pedido encontrado</h2>
+      <p>
+        Você ainda não fez nenhum pedido. Explore nossos
+        <%= link_to "produtos", root_path, class: "text-blue-600 hover:underline font-semibold" %>
+        e comece a comprar!
+      </p>
+    </div>
+    <% end %>
+  </div>
+</div>
