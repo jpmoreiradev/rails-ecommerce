@@ -16,10 +16,11 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '51403cebfb3db861245ed54baa3b534928f50db3155b456930d2fc9e02a06c15dbd17726703af7eed45e1ef2df9c0f41578c14f5d2ad26821550b26b45c30526'
   Rails.application.config.to_prepare do
-    Devise::SessionsController.layout "application"
-    Devise::RegistrationsController.layout "application"
-    Devise::PasswordsController.layout "application"
+    Devise::SessionsController.layout "devise"
+    Devise::RegistrationsController.layout "devise"
+    Devise::PasswordsController.layout "devise"
   end
+
 
 
   # ==> Controller configuration
