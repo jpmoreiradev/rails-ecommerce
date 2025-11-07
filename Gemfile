@@ -65,7 +65,7 @@ group :test do
 end
 
 gem "devise", "~> 4.9"
-gem "stripe", "~> 16.0"
+gem "stripe", "~> 17.2"
 gem "sidekiq", "~> 8.0"
 gem "redis", "~> 5.4"
 gem "dotenv-rails", groups: [ :development, :test ]
